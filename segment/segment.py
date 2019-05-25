@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing import image
 from PIL import ImageOps
 
 def gen_binarray(filename, proj_axis = 0, quantile = 0.8, invert = False):

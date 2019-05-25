@@ -1,15 +1,22 @@
-from PIL import Image
+#from PIL import Image
+import PIL
+from segment import *
+from IPython.display import display, Image
 
-def fragmentStrip(ImageJpg, savePath, widthArray, heightArray):
-    white = 1;
-    black = 0;
-    
-    im = Image.open(ImageJpg)
+def fragmentStrip(ImageJpg, savePath, quantile = 0.9):
+    white = True;
+    black = False;
+
+    widthArray = gen_binarray(ImageJpg, proj_axis=0, quantile=quantile)
+    heightArray = gen_binarray(ImageJpg, proj_axis=1, quantile=quantile)
+
+    im = PIL.Image.open(ImageJpg)
 
     width, height = im.size
     divisor = 7
-    numberArray = [y%2 for y in range(divisor) for x in range(height//divisor)]
-    print(numberArray)
+    #numberArray = [y%2 for y in range(divisor) for x in range(height//divisor)]
+    numberArray = heightArray[0]
+    #print(numberArray)
     i = 0
 
     widthStart = 5
@@ -47,16 +54,17 @@ def crop(startValueWidth, startValueHeight, endValueWidth, \
     if(startValueHeight == endValueHeight):
         return
     else:
-        im = Image.open(ImageJpg)
+        im = PIL.Image.open(ImageJpg)
         box = (startValueWidth, startValueHeight, endValueWidth, endValueHeight)
         try:
             a = im.crop(box)
-            a.save(savePath + ImageJpg[13:-4] + "_" +str(startValueHeight) \
-            + "_" + str(endValueHeight) + ".jpg")
-        except e:
+            #a.save(savePath + ImageJpg[13:-4] + "_" +str(startValueHeight) \
+            #+ "_" + str(endValueHeight) + ".jpg")
+            display(a)
+        except Exception as e:
             return
 
 
-fragmentStrip("./Task1/train/004708932_00055_l0.jpg", "./Result", 0, [])
+#fragmentStrip("./Task1/train/004708932_00055_l0.jpg", "./Result", 0, [])
         
     
